@@ -25,7 +25,7 @@ public class GameMenuFrame extends JFrame implements ActionListener
 		setLayout( null );
 		
 		fireButton = new JButton();
-		fireButton.setIcon( new ImageIcon( "GamePics/fireIcon.png" ) );
+		fireButton.setIcon( new ImageIcon( "GamePicsfireIcon.png" ) );
 		fireButton.setBounds( 50, 120, 325, 100 );
 		fireButton.addActionListener( this );
 		
@@ -77,6 +77,7 @@ public class GameMenuFrame extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed( ActionEvent event )
 	{
-		
+		if( event.getSource() == fireButton )
+			System.out.println( "fire" );
 	}
 }
