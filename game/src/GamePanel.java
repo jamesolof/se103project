@@ -29,8 +29,10 @@ public class GamePanel extends JPanel
 	}
 	
 	public void setGame( String gameToStart )
-	{
-		runningGame = games[0];
+	{	
+		//Un-comment stuff between /* and */ to see effects of gameloop
+		//Make sure to re-comment it after your done
+				
 		/*
 		for( int i = 0; i < games.length; i++ )
 		{
@@ -40,6 +42,9 @@ public class GamePanel extends JPanel
 			}
 		}
 		*/
+		
+		//comment out if you un-comment the above stuff, un-comment after re-commenting the above
+		runningGame = games[0];
 		
 		Thread GameLoop = new Thread()
 		{
@@ -76,8 +81,12 @@ public class GamePanel extends JPanel
 			
 			if( paused == false )
 			{
-				counter++;
+				//Un-comment stuff 'counter++' to see effects of game loop
+				//Make sure to re-comment it after your done
 				
+				//counter++;
+				
+				//comment out if you un-comment the above stuff, un-comment after re-commenting the above
 				runningGame.update();
 			}
 			
@@ -117,8 +126,8 @@ public class GamePanel extends JPanel
 	{
 		super.paintComponent( g );
 		
-		//Uncomment stuff between /* and */ to see effects of gameloop
-		
+		//Un-comment stuff between /* and */ to see effects of gameloop
+		//Make sure to re-comment it after your done
 		
 		/*
 		if( counter <= 20 )
@@ -140,8 +149,10 @@ public class GamePanel extends JPanel
 		{
 			counter = 0;
 		}
+		
 		*/
 		
+		//comment out if you un-comment the above stuff, un-comment after re-commenting the above
 		runningGame.draw( g );
 		
 		

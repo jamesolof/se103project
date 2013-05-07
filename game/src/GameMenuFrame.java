@@ -32,7 +32,7 @@ public class GameMenuFrame extends JFrame implements ActionListener
 		gp.setVisible( false );
 		
 		title = new JLabel();
-		title.setIcon( new ImageIcon( "GamePics/titleIcon.png" ) );
+		title.setIcon( new ImageIcon( "GamePics/Icons/titleIcon.png" ) );
 		title.setBounds( 50, 10, 700, 100 );
 		
 		for( int i = 0; i < buttons.length; i++ )
@@ -42,7 +42,7 @@ public class GameMenuFrame extends JFrame implements ActionListener
 			if( i % 2 == 0 )
 			{
 				buttons[i] = new JButton();
-				buttons[i].setIcon( new ImageIcon( String.format( "GamePics/%sIcon.png", gameNames[i] ) ) );
+				buttons[i].setIcon( new ImageIcon( String.format( "GamePics/Icons/%sIcon.png", gameNames[i] ) ) );
 				
 				if( i <= 3 )
 				{

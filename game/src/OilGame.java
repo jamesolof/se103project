@@ -39,7 +39,7 @@ public class OilGame extends Game
 	{
 		super( io );
 		
-		oilPlayer = new Player( playerXPoints[currentPlayerColumn], playerYPoint, io, getGameName() );
+		oilPlayer = new OilPlayer( playerXPoints[currentPlayerColumn], playerYPoint, io );
 	}
 	
 	private void updateOil()
@@ -73,8 +73,30 @@ public class OilGame extends Game
 				currentOilColumn = -1;
 			}
 			
-			System.out.println( "Score: " + score + "\nBucket Score: " + bucketScore + "\nMisses: " + misses );
+			adjustOilSpeed();
+			
+			System.out.println( "Score: " + score + "\tMisses: " + misses + "\nBucket Score: " + bucketScore + "\nOil Fb4U: " + oilFramesBeforeUpdate );
 		}
+	}
+	
+	public void adjustOilSpeed()
+	{
+		if( score >= 15 && score < 30 )
+			oilFramesBeforeUpdate = 95;
+		else if( score >= 30 && score < 50 )
+			oilFramesBeforeUpdate = 90;
+		else if( score >= 50 && score < 70 )
+			oilFramesBeforeUpdate = 80;
+		else if( score >= 70 && score < 90 )
+			oilFramesBeforeUpdate = 70;
+		else if( score >= 90 && score < 115 )
+			oilFramesBeforeUpdate = 60;
+		else if( score >= 115 && score < 140 )
+			oilFramesBeforeUpdate = 50;
+		else if( score >= 140 && score < 165 )
+			oilFramesBeforeUpdate = 40;
+		else if( score >= 165 )
+			oilFramesBeforeUpdate = 30;
 	}
 	
 	private void updateAI()

@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+
 import java.awt.image.ImageObserver;
 
 //each game should extend Game 
@@ -7,6 +8,7 @@ public abstract class Game
 	public Game( ImageObserver io )
 	{
 		//image observer io is necessary for drawing player images and such
+		//see 'OilGame' constructor to see what to do with ImageObserver io
 	}
 	
 	//implement method to return "fire", "octopus", "flagman", "turtle", "oil", "cement", "helmet" or "chef"
