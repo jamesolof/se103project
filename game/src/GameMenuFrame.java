@@ -1,22 +1,25 @@
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class GameMenuFrame extends JFrame implements ActionListener
 {
-	private GamePanel gp = new GamePanel();
+	private GamePanel gp;
 	
-	private JButton fireButton;
-	private JButton octopusButton;
-	private JButton flagmanButton;
-	private JButton turtleButton;
-	private JButton oilButton;
-	private JButton cementButton;
-	private JButton helmetButton;
-	private JButton chefButton;
+	private JLabel title;
+	
+	private JButton[] buttons = new JButton[8];
+	private String[] gameNames = { "fire", "octopus", "flagman", "turtle", "oil", "cement", "helmet", "chef" };
+	
+	private int[] yPoints = { 120, 240, 360, 480, 120, 240, 360, 480 };
+	private int buttonWidth = 325;
+	private int buttonHeight = 100;
 	
 	public GameMenuFrame()
 	{
@@ -24,60 +27,71 @@ public class GameMenuFrame extends JFrame implements ActionListener
 		
 		setLayout( null );
 		
-		fireButton = new JButton();
-		fireButton.setIcon( new ImageIcon( "GamePicsfireIcon.png" ) );
-		fireButton.setBounds( 50, 120, 325, 100 );
-		fireButton.addActionListener( this );
+		gp = new GamePanel();
+		gp.setBounds( 0, 0, 800, 600 );
+		gp.setVisible( false );
 		
-		octopusButton = new JButton();
-		//octopusButton.setIcon( new ImageIcon( "" ) );
-		octopusButton.setBounds( 50, 240, 325, 100 );
-		octopusButton.addActionListener( this );
+		title = new JLabel();
+		title.setIcon( new ImageIcon( "GamePics/titleIcon.png" ) );
+		title.setBounds( 50, 10, 700, 100 );
 		
-		flagmanButton = new JButton();
-		flagmanButton.setIcon( new ImageIcon( "GamePics/flagmanIcon.png" ) );
-		flagmanButton.setBounds( 50, 360, 325, 100 );
-		flagmanButton.addActionListener( this );
+		for( int i = 0; i < buttons.length; i++ )
+		{
+			//if( i % 2 == 0)--else statement is temporarily in place to prevent exceptions
+			//      		        **Will be removed upon completion of other icons**
+			if( i % 2 == 0 )
+			{
+				buttons[i] = new JButton();
+				buttons[i].setIcon( new ImageIcon( String.format( "GamePics/%sIcon.png", gameNames[i] ) ) );
+				
+				if( i <= 3 )
+				{
+					buttons[i].setBounds( 50, yPoints[i], buttonWidth, buttonHeight );
+				}
+				else
+				{
+					buttons[i].setBounds( 425, yPoints[i], buttonWidth, buttonHeight );
+				}
+			}
+			else
+			{
+				buttons[i] = new JButton( gameNames[i] + " icon coming soon" );
+				
+				if( i <= 3 )
+				{
+					buttons[i].setBounds( 50, yPoints[i], buttonWidth, buttonHeight );
+				}
+				else
+				{
+					buttons[i].setBounds( 425, yPoints[i], buttonWidth, buttonHeight );
+				}
+			}
+			
+			buttons[i].addActionListener( this );
+			add( buttons[i] );
+		}
 		
-		turtleButton = new JButton();
-		//turtleButton.setIcon( new ImageIcon( "" ) );
-		turtleButton.setBounds( 50, 480, 325, 100 );
-		turtleButton.addActionListener( this );
-		
-		oilButton = new JButton();
-		oilButton.setIcon( new ImageIcon( "GamePics/oilIcon.png" ) );
-		oilButton.setBounds( 425, 120, 325, 100 );
-		oilButton.addActionListener( this );
-		
-		cementButton = new JButton();
-		//cementButton.setIcon( new ImageIcon( "" ) );
-		cementButton.setBounds( 425, 240, 325, 100 );
-		cementButton.addActionListener( this );
-		
-		helmetButton = new JButton();
-		helmetButton.setIcon( new ImageIcon( "GamePics/helmetIcon.png" ) );
-		helmetButton.setBounds( 425, 360, 325, 100 );
-		helmetButton.addActionListener( this );
-		
-		chefButton = new JButton();
-		//chefButton.setIcon( new ImageIcon( "" ) );
-		chefButton.setBounds( 425, 480, 325, 100 );
-		chefButton.addActionListener( this );
-		
-		add( fireButton );
-		add( octopusButton );
-		add( flagmanButton );
-		add( turtleButton );
-		add( oilButton );
-		add( cementButton );
-		add( helmetButton );
-		add( chefButton );
+		add( title );
+		add( gp );
 	}
 
 	@Override
 	public void actionPerformed( ActionEvent event )
 	{
-		if( event.getSource() == fireButton )
-			System.out.println( "fire" );
+		String gameToStart = new String();
+		
+		for( int i = 0; i < buttons.length; i++ )
+		{
+			if( event.getSource() == buttons[i] )
+			{
+				gameToStart = gameNames[i];
+				
+				gp.setGame( gameToStart );	
+			}
+			
+			gp.setVisible( true );
+			title.setVisible( false );
+			buttons[i].setVisible( false );
+		}
 	}
 }
