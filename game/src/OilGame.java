@@ -135,30 +135,7 @@ public class OilGame extends Game
 	
 	private void updateAI()
 	{
-		catcherFrames++;
 		
-		if( catcherFrames >= catcherFramesBeforeUpdate )
-		{
-			if( currentCatcherColumn == 0 )
-			{
-				movingRight = true;
-			}
-			else if( currentCatcherColumn == 3 )
-			{
-				movingRight = false;
-			}
-			
-			if( movingRight == true )
-			{
-				currentCatcherColumn++;
-			}
-			else
-			{
-				currentCatcherColumn--;
-			}
-			
-			catcherFrames = 0;
-		}
 	}
 	
 	@Override

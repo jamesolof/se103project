@@ -156,7 +156,7 @@ public class GamePanel extends JPanel
 		runningGame.draw( g );
 		
 		
-		if( paused == true )
+		if( paused )
 		{
 			counter = counter;
 			
