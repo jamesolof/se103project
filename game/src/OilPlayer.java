@@ -39,7 +39,7 @@ public class OilPlayer extends Sprite
 		{
 			for( int i = 0; i < playerImages.length; i++ )
 			{
-				playerImages[i] = ImageIO.read( new File( String.format( "GamePics/Oil/Player/oilPlayer%d.png", i ) ) );
+				playerImages[i] = ImageIO.read( new File( String.format( "bin/GamePics/Oil/Player/oilPlayer%d.png", i ) ) );
 			}
 		}
 		

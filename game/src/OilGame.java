@@ -57,17 +57,17 @@ public class OilGame extends Game
 	{
 		try
 		{
-			background = ImageIO.read( new File( "GamePics/Oil/oilBackground.png" ) );
+			background = ImageIO.read( new File( "bin/GamePics/Oil/oilBackground.png" ) );
 			
 			for( int i = 0; i < bucketImages.length; i++ )
 			{
-				bucketImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/Misc/oilBucket%d.png", i ) ) );
+				bucketImages[ i ] = ImageIO.read( new File( String.format( "bin/GamePics/Oil/Misc/oilBucket%d.png", i ) ) );
 			}
 			
-			oilStartImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDropStart.png" ) );
-			oilFallImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDrop.png" ) );
-			playerThrowingLeft = ImageIO.read( new File( "GamePics/Oil/Misc/oilPlayerThrowing1.png" ) );
-			playerThrowingRight = ImageIO.read( new File( "GamePics/Oil/Misc/oilPlayerThrowing2.png" ) );
+			oilStartImage = ImageIO.read( new File( "bin/GamePics/Oil/Misc/oilDropStart.png" ) );
+			oilFallImage = ImageIO.read( new File( "bin/GamePics/Oil/Misc/oilDrop.png" ) );
+			playerThrowingLeft = ImageIO.read( new File( "bin/GamePics/Oil/Misc/oilPlayerThrowing1.png" ) );
+			playerThrowingRight = ImageIO.read( new File( "bin/GamePics/Oil/Misc/oilPlayerThrowing2.png" ) );
 		}
 		
 		catch( IOException e )
