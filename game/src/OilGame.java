@@ -21,13 +21,11 @@ public class OilGame extends Game
 	private BufferedImage playerThrowingRight = null;
 	private BufferedImage playerThrowingLeft = null;
 	
-	private int[] catcherXPoints = { 150, 350, 550, 650 };
-	private int catcherYPoint = 550;
+	
 	private int currentCatcherColumn = 0;
 	private boolean movingRight = true;
 	private int catcherFrames = 0;
 	private int catcherFramesBeforeUpdate = 75;
-	private BufferedImage[] catcherImages = new BufferedImage[ 4 ];
 	
 	private int[] oilXPoints = { 250, 400, 550 };
 	private int[] oilYPoints = { 75, 150, 225, 300 }; 
@@ -61,14 +59,9 @@ public class OilGame extends Game
 		{
 			background = ImageIO.read( new File( "GamePics/Oil/oilBackground.png" ) );
 			
-			for( int i = 0; i < catcherImages.length; i++ )
+			for( int i = 0; i < bucketImages.length; i++ )
 			{
-				catcherImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/AI/oilAIColumn%d.png", i ) ) );
-				
-				if( i < 3 )
-				{
-					bucketImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/Misc/oilBucket%d.png", i ) ) );
-				}
+				bucketImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/Misc/oilBucket%d.png", i ) ) );
 			}
 			
 			oilStartImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDropStart.png" ) );
@@ -193,32 +186,28 @@ public class OilGame extends Game
 			g.fillOval( oilXPoints[currentOilColumn], oilYPoints[currentOilRow], 25, 25 );
 		}
 		
-		g.fillOval( catcherXPoints[ currentCatcherColumn ], catcherYPoint, 50, 50 );
 		//g.drawImage( )
 	}
 
 	@Override
 	public void processKeyEvents( String key )
 	{
-		switch( key )
+		if( key.equals( "A" ) || key.equals( "Left" ) )
 		{
-		case "A":
-		case "Left":
 			if( currentPlayerColumn > 1 )
 			{
 				currentPlayerColumn--;
 			}
-			break;
-			
-		case "D":
-		case "Right":
+		}
+		else if( key.equals( "D" ) || key.equals( "Right" ) )
+		{
 			if( currentPlayerColumn < 3 )
 			{
 				currentPlayerColumn++;
 			}
-			break;
-			
-		case "Space":
+		}
+		else if( key.equals( "Space" ) )
+		{
 			if( currentPlayerColumn == 1 )
 			{
 				currentPlayerColumn = 0;
@@ -247,7 +236,6 @@ public class OilGame extends Game
 					bucketScore = 0;
 				}
 			}
-			break;
 		}
 		
 		oilPlayer.update( currentPlayerColumn );
