@@ -1,15 +1,51 @@
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 
-public class OilPlayer extends Player
+import javax.imageio.ImageIO;
+
+public class OilPlayer extends Sprite
 {
+	BufferedImage[] playerImages = new BufferedImage[ 5 ];
+	
 	public OilPlayer( int x, int y, ImageObserver io) 
 	{
 		super( x, y, io );
+		
+		loadImages();
 	}
 
+	public void update( int playerColumn )
+	{
+		int[] playerXPoints = { 0, 146, 326, 516, 660 };
+		int playerYPoint;
+		
+		if( playerColumn == 0 || playerColumn == 4 )
+			playerYPoint = 220;
+		else
+			playerYPoint = 200;
+		
+		setXPos( playerXPoints[ playerColumn ] );
+		setYPos( playerYPoint );
+		setCurrentImage( playerImages[ playerColumn ] );
+	}
+	
 	@Override
 	public void loadImages()
 	{
-		//load images here
+		try 
+		{
+			for( int i = 0; i < playerImages.length; i++ )
+			{
+				playerImages[i] = ImageIO.read( new File( String.format( "GamePics/Oil/Player/oilPlayer%d.png", i ) ) );
+			}
+		}
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,17 +1,25 @@
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 
 public class OilGame extends Game
 {
 	private Random random = new Random();
 	
-	private int bucketScore = 0;
+	private BufferedImage background = null;
 	
-	private int[] playerXPoints = { 150, 250, 400, 550, 650 };
-	private int playerYPoint = 400;
+	private int bucketScore = 0;
+	private BufferedImage[] bucketImages = new BufferedImage[ 3 ];
+	
 	private int currentPlayerColumn = 2;
+	private BufferedImage playerThrowingRight = null;
+	private BufferedImage playerThrowingLeft = null;
 	
 	private int[] catcherXPoints = { 150, 350, 550, 650 };
 	private int catcherYPoint = 550;
@@ -19,27 +27,60 @@ public class OilGame extends Game
 	private boolean movingRight = true;
 	private int catcherFrames = 0;
 	private int catcherFramesBeforeUpdate = 75;
+	private BufferedImage[] catcherImages = new BufferedImage[ 4 ];
 	
 	private int[] oilXPoints = { 250, 400, 550 };
 	private int[] oilYPoints = { 75, 150, 225, 300 }; 
 	private int currentOilColumn = -1;
 	private int currentOilRow = 0;
-	
 	private int oilFrames = 0;
 	private int oilFramesBeforeUpdate = 100;
+	private BufferedImage oilStartImage = null;
+	private BufferedImage oilFallImage = null;
 	
 	private int score = 0;
 	private int misses = 0;
 	
 	private int maxMisses = 3;
 	
-	private Player oilPlayer;
+	private OilPlayer oilPlayer;
 	
 	public OilGame( ImageObserver io )
 	{
 		super( io );
 		
-		oilPlayer = new OilPlayer( playerXPoints[currentPlayerColumn], playerYPoint, io );
+		oilPlayer = new OilPlayer( 0, 0, io );
+		oilPlayer.update( currentPlayerColumn );
+		
+		loadImages();
+	}
+	
+	private void loadImages()
+	{
+		try
+		{
+			background = ImageIO.read( new File( "GamePics/Oil/oilBackground.png" ) );
+			
+			for( int i = 0; i < catcherImages.length; i++ )
+			{
+				catcherImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/AI/oilAIColumn%d.png", i ) ) );
+				
+				if( i < 3 )
+				{
+					bucketImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/Misc/oilBucket%d.png", i ) ) );
+				}
+			}
+			
+			oilStartImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDropStart.png" ) );
+			oilFallImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDrop.png" ) );
+			playerThrowingLeft = ImageIO.read( new File( "GamePics/Oil/Misc/oilPlayerThrowing1.png" ) );
+			playerThrowingRight = ImageIO.read( new File( "GamePics/Oil/Misc/oilPlayerThrowing2.png" ) );
+		}
+		
+		catch( IOException e )
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private void updateOil()
@@ -126,6 +167,7 @@ public class OilGame extends Game
 			catcherFrames = 0;
 		}
 	}
+	
 	@Override
 	public String getGameName() 
 	{
@@ -142,6 +184,8 @@ public class OilGame extends Game
 	@Override
 	public void draw(Graphics g)
 	{
+		g.drawImage( background, 0, 0, getImageObserver() );
+		
 		oilPlayer.draw( g );
 		
 		if( currentOilColumn >= 0 )
@@ -205,8 +249,8 @@ public class OilGame extends Game
 			}
 			break;
 		}
-		oilPlayer.setXPos( playerXPoints[ currentPlayerColumn ] );
-		oilPlayer.setYPos( playerYPoint );
+		
+		oilPlayer.update( currentPlayerColumn );
 		//oilPlayer.setCurrentImage( currentPlayerColumn );
 	}
 }

@@ -64,7 +64,7 @@ public class GamePanel extends JPanel
 		final int desiredUpdateTime = 1000000000 / 60;
 		int fps = 0;
 		
-		while( running == true )
+		while( running )
 		{
 			long now = System.nanoTime();
 			long thisUpdateTime = now - lastLoopTime;
@@ -79,7 +79,7 @@ public class GamePanel extends JPanel
 				fps = 0;
 			}
 			
-			if( paused == false )
+			if( !paused )
 			{
 				//Un-comment stuff 'counter++' to see effects of game loop
 				//Make sure to re-comment it after your done
