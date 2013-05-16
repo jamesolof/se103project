@@ -94,7 +94,7 @@ public class OilGame extends Game
 	{
 		try
 		{
-			background = ImageIO.read( new File( "GamePics/Oil/oilBackground.png" ) );
+			background = ImageIO.read( new File( "bin/GamePics/Oil/oilBackground.png" ) );
 			
 			for( int i = 0; i < scoreNumbers.length; i++ )
 			{
@@ -249,6 +249,8 @@ public class OilGame extends Game
 		bucketScore = scoreUpdates[ 1 ];
 		oilMisses = scoreUpdates[ 2 ];
 		
+		setScoreImage();
+		
 		if( mAngry )
 			animateMan();
 		
@@ -257,8 +259,6 @@ public class OilGame extends Game
 		
 		if( throwIndex >= 0 )
 			animateThrow();
-		
-		setScoreImage();
 		
 		catcher.update();
 	}
@@ -344,7 +344,7 @@ public class OilGame extends Game
 				if( catcher.getColumn() == 0 )
 				{
 					leftCatch = true;
-					score = score + bucketScore;
+					score = score + bucketScore + 1;
 					bucketScore = -1;
 				}
 				else if( bucketScore >= 0 )
@@ -369,7 +369,7 @@ public class OilGame extends Game
 				if( catcher.getColumn() == 3 )
 				{
 					rightCatch = true;
-					score = score + bucketScore;
+					score = score + bucketScore + 1;
 					bucketScore = -1;
 				}
 				else if( bucketScore >= 0 )
@@ -383,7 +383,7 @@ public class OilGame extends Game
 				}
 			}
 		}		
-	
+
 		player.update( playerColumn );
 	}
 }
