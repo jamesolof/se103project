@@ -6,11 +6,13 @@ import java.awt.image.ImageObserver;
 public abstract class Game 
 {
 	private ImageObserver observer;
+	private boolean gameOver;
 	
 	public Game( ImageObserver io )
 	{
 		observer = io;
 		
+		gameOver = false;
 		//image observer io is necessary for drawing player images and such
 		//see 'OilGame' constructor to see what to do with ImageObserver io
 	}
@@ -18,6 +20,16 @@ public abstract class Game
 	public ImageObserver getImageObserver()
 	{
 		return observer;
+	}
+	
+	public void setGameOver( boolean b )
+	{
+		gameOver = b;
+	}
+	
+	public boolean getGameOver()
+	{
+		return gameOver;
 	}
 	
 	//implement method to return "fire", "octopus", "flagman", "turtle", "oil", "cement", "helmet" or "chef"

@@ -45,7 +45,5 @@ public abstract class Sprite
 	public void draw( Graphics g )
 	{
 		g.drawImage( currentImage, xPos, yPos, imageObserver );
-		
-		//g.fillOval(xPos, yPos, 50, 50); 
 	}
 }

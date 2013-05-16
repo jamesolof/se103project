@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class OilPlayer extends Sprite
 {
-	BufferedImage[] playerImages = new BufferedImage[ 5 ];
+	private BufferedImage[] playerImages = new BufferedImage[ 5 ];
 	
 	public OilPlayer( int x, int y, ImageObserver io) 
 	{
@@ -17,19 +17,20 @@ public class OilPlayer extends Sprite
 		loadImages();
 	}
 
-	public void update( int playerColumn )
+	public void update( int column )
 	{
-		int[] playerXPoints = { 0, 146, 326, 516, 660 };
+		int[] playerXPoints = { 0, 146, 326, 516, 504 };
 		int playerYPoint;
 		
-		if( playerColumn == 0 || playerColumn == 4 )
+		if( column == 0 || column == 4 )
 			playerYPoint = 220;
 		else
 			playerYPoint = 200;
 		
-		setXPos( playerXPoints[ playerColumn ] );
+		setXPos( playerXPoints[ column ] );
 		setYPos( playerYPoint );
-		setCurrentImage( playerImages[ playerColumn ] );
+		
+		setCurrentImage( playerImages[ column ] );
 	}
 	
 	@Override
