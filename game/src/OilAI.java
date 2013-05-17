@@ -59,11 +59,7 @@ public class OilAI extends Sprite
 		{
 			for( int i = 0; i < images.length; i++ )
 			{
-<<<<<<< HEAD
 				images[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/AI/oilAIColumn%d.png", i ) ) );
-=======
-				catcherImages[ i ] = ImageIO.read( new File( String.format( "bin/GamePics/Oil/AI/oilAIColumn%d.png", i ) ) );
->>>>>>> 243342b87075ff98dea97c1574373c41c95c5b86
 			}
 		}
 		
