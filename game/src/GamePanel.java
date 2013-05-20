@@ -15,6 +15,8 @@ public class GamePanel extends JPanel
 	
 	int counter = 0;
 	
+	StringBuilder initials = new StringBuilder();
+	
 	Thread GameLoop = new Thread()
 	{
 		public void run()
@@ -56,7 +58,7 @@ public class GamePanel extends JPanel
 			lastLoopTime = now;
 			
 			oneSecondCheck = oneSecondCheck + thisUpdateTime;
-
+			
 			if( oneSecondCheck >= 1000000000 )
 			{
 				oneSecondCheck = 0;
@@ -85,10 +87,10 @@ public class GamePanel extends JPanel
 		@Override
 		public void keyPressed( KeyEvent e )
 		{
+			String key = KeyEvent.getKeyText( e.getKeyCode() );
+			
 			if( !runningGame.getGameOver() )
 			{
-				String key = KeyEvent.getKeyText( e.getKeyCode() );
-			
 				if( key.equalsIgnoreCase( "P" ) )
 				{
 					paused = !paused; 
@@ -97,6 +99,16 @@ public class GamePanel extends JPanel
 				{
 					runningGame.processKeyEvents( key );
 				}
+			}
+			else
+			{
+				if( key.length() == 1 )
+					initials.append( key );
+				else if( key.equalsIgnoreCase( "backspace" ) && initials.length() > 0 )
+					initials.deleteCharAt( initials.length() - 1 );
+				
+				if( initials.length() > 3 )
+					initials.delete( 3, initials.length() );
 			}
 		}
 	}
@@ -119,7 +131,7 @@ public class GamePanel extends JPanel
 		{
 			g.setColor( Color.RED );
 			g.drawString( "Game Over!", 400, 300 );
-			
+			g.drawString( initials.toString(), 100, 100 );
 			//if player gets a score that is within the top ten scores
 			    //draw a leaderboard with game name at the top, show their scores (and ask them to input 1st 3 initials) 
 			    //and display the remaining 9 highest scores

@@ -16,7 +16,7 @@ public class OilDrop extends Sprite
 	private int lastColumn;
 	private int row = 0;
 	private int frames = 0;
-	private double framesBeforeUpdate = 100;
+	private double framesBeforeUpdate = 90;
 
 	public OilDrop(int x, int y, ImageObserver io) 
 	{
@@ -96,7 +96,10 @@ public class OilDrop extends Sprite
 	
 	public void adjustSpeed( int score )
 	{
-		framesBeforeUpdate = Math.round( framesBeforeUpdate - (score*.01) );
+		framesBeforeUpdate = Math.round( framesBeforeUpdate - (score*.02) );
+		
+		if( framesBeforeUpdate < 30 )
+			framesBeforeUpdate = 30;
 	}
 	
 	@Override

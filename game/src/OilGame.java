@@ -94,7 +94,7 @@ public class OilGame extends Game
 	{
 		try
 		{
-			background = ImageIO.read( new File( "bin/GamePics/Oil/oilBackground.png" ) );
+			background = ImageIO.read( new File( "GamePics/Oil/oilBackground.png" ) );
 			
 			for( int i = 0; i < scoreNumbers.length; i++ )
 			{
