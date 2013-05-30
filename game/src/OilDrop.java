@@ -1,9 +1,6 @@
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
-import javax.imageio.ImageIO;
 
 public class OilDrop extends Sprite 
 {
@@ -18,12 +15,14 @@ public class OilDrop extends Sprite
 	private int frames = 0;
 	private double framesBeforeUpdate = 90;
 
-	public OilDrop(int x, int y, ImageObserver io) 
+	public OilDrop( int x, int y, ImageObserver io, BufferedImage sImage, BufferedImage fImage ) 
 	{
 		super( x, y, io );
 		
+		startImage = sImage;
+		fallImage = fImage;
+		
 		column = random.nextInt( 3 );
-		loadImages();
 	}
 
 	public int getColumn()
@@ -100,20 +99,5 @@ public class OilDrop extends Sprite
 		
 		if( framesBeforeUpdate < 30 )
 			framesBeforeUpdate = 30;
-	}
-	
-	@Override
-	public void loadImages() 
-	{
-		try 
-		{
-			startImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDropStart.png" ) );
-			fallImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDrop.png" ) );
-		} 
-		
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 }

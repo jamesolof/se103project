@@ -2,18 +2,31 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel 
 {
 	//will contain one object of each game
-	Game[] games = new Game[8];
+	Game[] games = new Game[4];
 	Game runningGame;
 	
 	boolean running = true;
 	boolean paused = false;
+
+	boolean scoresSorted = false;
 	
-	int counter = 0;
+	private int scoreXPoint = 315;
+	private int nameXPoint = 370;
+	private int[] scoreRecordYPoints = { 241, 269, 296, 324, 351, 379, 407, 434, 462, 489 };
+	
+	private int thisIndex = -1;
+	
+	private BufferedImage gameOverScreen = null;
 	
 	StringBuilder initials = new StringBuilder();
 	
@@ -34,13 +47,29 @@ public class GamePanel extends JPanel
 		setFocusable( true );
 		
 		games[0] = new OilGame( this );
+		games[1] = new FireGame( this );
+		games[2] = new HelmetGame( this );
+		games[3] = new FlagmanGame( this );
 		
 		addKeyListener( new KeyHandler() );
+		
+		try
+		{
+			gameOverScreen = ImageIO.read( new File( "GamePics/Icons/GameOverScreen.png" ) );
+		}
+		catch( IOException e )
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void setGame( String gameToStart )
 	{
-		runningGame = games[0];
+		for( int i = 0; i < games.length; i++ )
+		{
+			if( games[i].getGameName() == gameToStart )
+				runningGame = games[i];
+		}
 		
 		GameLoop.start();
 	}
@@ -73,7 +102,7 @@ public class GamePanel extends JPanel
 			
 			try 
 			{
-				Thread.sleep( ( lastLoopTime-System.nanoTime() + desiredUpdateTime ) / 1000000 );
+				Thread.sleep( Math.abs( ( lastLoopTime-System.nanoTime() + desiredUpdateTime ) / 1000000 ) );
 			} 
 			catch (InterruptedException e) 
 			{
@@ -109,6 +138,9 @@ public class GamePanel extends JPanel
 				
 				if( initials.length() > 3 )
 					initials.delete( 3, initials.length() );
+				
+				if( key.equals( "Enter" ) && thisIndex >= 0 )
+					runningGame.writeHighScores( thisIndex, initials.toString() );
 			}
 		}
 	}
@@ -120,7 +152,7 @@ public class GamePanel extends JPanel
 		
 		runningGame.draw( g );
 
-		if( paused )
+		if( paused && !runningGame.getGameOver() )
 		{
 			g.setColor( Color.WHITE );
 			g.fillRect( 100, 100, 600, 400 );
@@ -129,16 +161,20 @@ public class GamePanel extends JPanel
 		}
 		else if( runningGame.getGameOver() )
 		{
-			g.setColor( Color.RED );
-			g.drawString( "Game Over!", 400, 300 );
-			g.drawString( initials.toString(), 100, 100 );
-			//if player gets a score that is within the top ten scores
-			    //draw a leaderboard with game name at the top, show their scores (and ask them to input 1st 3 initials) 
-			    //and display the remaining 9 highest scores
-			    //once 3 initials are input, pressing enter will return them to the game selection screen
-			//else
-			    //show a message that the player did not score within the top ten, and return them to the 
-			    //game selection screen after some amount of time (somewhere between 5 and 15 seconds)
+			g.drawImage( gameOverScreen, 150, 100, this );
+			
+			if( scoresSorted == false )
+			{
+				thisIndex = runningGame.sortHighScores();
+				scoresSorted = true;
+			}
+			
+			runningGame.drawScores( g, scoreXPoint, nameXPoint, scoreRecordYPoints );
+			
+			if( thisIndex >= 0 && initials.toString() != null )
+			{
+				g.drawString( initials.toString(), nameXPoint, scoreRecordYPoints[ thisIndex ] );
+			}
 		}
 	}
 }

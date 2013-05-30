@@ -1,8 +1,5 @@
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class OilAI extends Sprite
 {
@@ -13,11 +10,11 @@ public class OilAI extends Sprite
 	private int frames = 0;
 	private int framesBeforeUpdate = 75;
 	
-	public OilAI( int x, int y, ImageObserver io) 
+	public OilAI( int x, int y, ImageObserver io, BufferedImage[] cImages ) 
 	{
 		super( x, y, io );
 		
-		loadImages();
+		images = cImages;
 	}
 
 	public int getColumn()
@@ -50,22 +47,5 @@ public class OilAI extends Sprite
 		setXPos( xPoints[ column ] );
 		setYPos( yPoints[ column ] );
 		setCurrentImage( images[ column ] );
-	}
-	
-	@Override
-	public void loadImages()
-	{
-		try
-		{
-			for( int i = 0; i < images.length; i++ )
-			{
-				images[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/AI/oilAIColumn%d.png", i ) ) );
-			}
-		}
-		
-		catch( IOException e )
-		{
-			e.printStackTrace();
-		}
 	}	
 }

@@ -1,0 +1,31 @@
+Class Descriptions
+
+GameMenuFrame: JFrame containing buttons to run each game
+
+GamePanel: JPanel used to render the game and menu screen
+
+Sprite: Abstract class that any class that moves should extend, this simplifies rendering and animations
+
+Game: Abstract class that each and every game we make will extend. This allows us to use dynamic binding to determine which game to render at runtime
+
+GameMain: Runs the JFrame
+
+HighScoreRecord: Class for displaying and keeping track of the top 10 high scores
+
+OilGame: Extends Game, this is the game "Oil Panic", this class handles loading all images related to Oil Panic and contains a lot of game logic
+
+OilPlayer, FirePlayer, FlagmanPlayer, HelmetPlayer: Extends Sprite, these classes handle key input and determine which player image to render and where to render them
+
+OilDrop: Extends Sprite, this class determines which oil image to render and where to render it
+
+OilAI: Extends Sprite, this class determines which Oil Catcher image to render and where to render
+
+FireGame: Extends Game, this is the game "Fire", class handles loading all images related to Fire and contains a lot of game logic
+
+FireMan: Extends Sprite, this class handles the path of jumpers from the building
+
+FlagmanGame: Extends Game, this is the game "Flagman", this class handles loading all images related to Flagman and contains all of the game logic
+
+HelmetGame: Extends Game, this is the game "Helmet", this class handles loading all images related to Helmet and contains a lot of the game logic
+
+HelmetTools: Extends Sprite, this class handles the path and image rendering of the falling tools

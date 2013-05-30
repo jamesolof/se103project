@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
-public abstract class Sprite 
+public class Sprite 
 {
 	private int xPos;
 	private int yPos;
@@ -24,8 +24,6 @@ public abstract class Sprite
 		
 		imageObserver = io;
 	}
-	
-	public abstract void loadImages();
 	
 	public void setXPos( int x )
 	{

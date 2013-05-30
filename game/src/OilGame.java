@@ -7,29 +7,23 @@ import javax.imageio.ImageIO;
 
 public class OilGame extends Game
 {
-	//background image
 	private BufferedImage background = null;
 	
-	//number images
 	private BufferedImage[] scoreNumbers = new BufferedImage[ 10 ];
-	
-	//stores the score by numbers 0-9 for each place, used for rendering correct score
 	private int hundredsIndex = 0;
 	private int tensIndex = 0;
 	private int onesIndex = 0;
 	
-	//images of pedestrian girl in lower right corner
 	private BufferedImage[] girlImages = new BufferedImage[ 5 ];
-	private boolean gAngry = false; //certain images of the girl are displayed when true
-	private int gImage = 0; //index of the girls current image
-	private int gCycle = 0; //times the girl's angry frames have been displayed after oil is thrown on her
-	private int gFrames = 0; //counter to determine when image is changed
+	private boolean gAngry = false;
+	private int gImage = 0;
+	private int gCycle = 0;
+	private int gFrames = 0;
 	private int girlXPoint1 = 586;
 	private int girlXPoint2 = 610;
 	private int girlYPoint1 = 514;
 	private int girlYPoint2 = 484;
 	
-	//same as above, but for the man in lower left corner
 	private BufferedImage[] manImages = new BufferedImage[ 5 ];
 	private boolean mAngry = false;
 	private int mImage = 0;
@@ -39,69 +33,68 @@ public class OilGame extends Game
 	private int manXPoint2 = 90;
 	private int manYPoint = 511;
 
-	//when gFrames or mFrames matches this, gImage or mImage (image index) is changed
 	private int mgFramesBeforeUpdate = 40;
 	
-	//images of the police officer displayed at game over screen
+	private BufferedImage[] playerImages = new BufferedImage[ 5 ];
+	
+	private BufferedImage[] catcherImages = new BufferedImage[ 4 ];
+	
 	private BufferedImage[] officerImages = new BufferedImage[ 2 ];
 	
-	//images of oil inside player's bucket
+	private BufferedImage startImage = null;
+	private BufferedImage fallImage = null;
+	
 	private BufferedImage[] bucketImages = new BufferedImage[ 3 ];
-	private int bucketScore = -1; //index of bucket image to display, changed when oil is caught or thrown
+	private int bucketScore = -1;
 	private int[] bucketXPoints = { 157, 338, 528 };
 	private int bucketYPoint = 208;
 	
-	//images of miss counter for oil that isn't caught
 	private BufferedImage[] oilMissesImages = new BufferedImage[ 3 ];
-	private int oilMisses = -1; //index of oil miss counter, changed when oil isn't caught
+	private int oilMisses = -1;
 	private int oilMissXPoint = 670;
 	private int oilMissYPoint = 55;
 	
-	//images of miss counter for throws that land on pedestrians
 	private BufferedImage[] throwMissesImages = new BufferedImage[ 3 ];
-	private int throwMisses = -1; //index of throw miss counter, changed when oil isn't thrown at right time
+	private int throwMisses = -1;
 	private int throwMissXPoint = 616;
 	private int throwMissYPoint = 315;
 	
-	//images of oil being thrown to the left by player
 	private BufferedImage[] throwLeftImages = new BufferedImage[ 2 ];
 	private int[] throwLeftXPoints = { 183, 160 };
 	private int[] throwLeftYPoints = { 418, 442 };
 	
-	//same as above, but thrown to the right
 	private BufferedImage[] throwRightImages = new BufferedImage[ 2 ];
 	private int[] throwRightXPoints = { 590, 580 };
 	private int[] throwRightYPoints = { 418, 442 };
 	
-	//index of which thrown oil image to display, changed when oil is thrown (is image index for left AND right throws) 
-	private int throwImage = -1;
-	private int throwFrames = 0; //counter for when throw image is changed
-	private int throwFramesBeforeUpdate = 18; //when throwFrames matches this, throwImage is incremented
+	private int throwIndex = -1;
+	private int throwFrames = 0;
+	private int throwFramesBeforeUpdate = 18;
 	
-	private int maxMisses = 2; //when oilMisses or throwMisses matches this, the game is over
+	private OilPlayer player;
+	private OilAI catcher;
+	private OilDrop oil;
+	
+	private int maxMisses = 2;
 	private int playerColumn = 2;
 	private int score = 0;
 	
-	// 'caught' and 'wasThrownLeft' checked when displaying certain images
-	private boolean caught = false;
+	private boolean leftCatch = false;
+	private boolean rightCatch = false;
 	private boolean wasThrownLeft = false;
-	
-	private OilPlayer player; //see class OilPlayer
-	private OilAI catcher; //see class OilAI
-	private OilDrop oil; //see class OilDrop
 	
 	public OilGame( ImageObserver io )
 	{
-		super( io ); //call to superclass Game's constructor
-		
-		player = new OilPlayer( 0, 0, io ); //create an object of OilPlayer
-		player.update( playerColumn ); //update player to 
-		
-		catcher = new OilAI( 0, 0, io );
-		
-		oil = new OilDrop( 0, 0, io );
+		super( io );
 		
 		loadImages();
+		
+		player = new OilPlayer( 0, 0, io, playerImages );
+		player.update( playerColumn );
+		
+		catcher = new OilAI( 0, 0, io, catcherImages );
+		
+		oil = new OilDrop( 0, 0, io, startImage, fallImage );
 	}
 	
 	private void loadImages()
@@ -110,14 +103,23 @@ public class OilGame extends Game
 		{
 			background = ImageIO.read( new File( "GamePics/Oil/oilBackground.png" ) );
 			
+			startImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDropStart.png" ) );
+			fallImage = ImageIO.read( new File( "GamePics/Oil/Misc/oilDrop.png" ) );
+			
 			for( int i = 0; i < scoreNumbers.length; i++ )
 			{
-				scoreNumbers[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/Misc/number%d.png", i ) ) );
+				scoreNumbers[ i ] = ImageIO.read( new File( String.format( "GamePics/Icons/ScoreNumbers/number%d.png", i ) ) );
 				
 				if( i < 5 )
 				{
+					playerImages[i] = ImageIO.read( new File( String.format( "GamePics/Oil/Player/oilPlayer%d.png", i ) ) );
 					manImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/Misc/oilMan%d.png", i ) ) );
 					girlImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/Misc/oilGirl%d.png", i ) ) );
+				}
+				
+				if( i < catcherImages.length )
+				{
+					catcherImages[ i ] = ImageIO.read( new File( String.format( "GamePics/Oil/AI/oilAIColumn%d.png", i ) ) );
 				}
 				
 				if( i < 3 )
@@ -229,22 +231,23 @@ public class OilGame extends Game
 		
 		if( throwFrames == throwFramesBeforeUpdate )
 		{
-			if( caught )
+			if( leftCatch || rightCatch )
 			{	
-				throwImage++;
+				throwIndex++;
 				throwFrames = 0;
 			}
 			else
 			{
-				throwImage = -1;
+				throwIndex = -1;
 				throwFrames = 0;
 			}
 		}
 		
-		if( throwImage > 1 )
+		if( throwIndex > 1 )
 		{
-			caught = false;
-			throwImage = -1;
+			leftCatch = false;
+			rightCatch = false;
+			throwIndex = -1;
 		}
 	}
 	
@@ -253,6 +256,7 @@ public class OilGame extends Game
 	{
 		if( oilMisses == maxMisses || throwMisses == maxMisses )
 		{
+			setScore( score );
 			setGameOver( true );
 		}
 		
@@ -270,14 +274,14 @@ public class OilGame extends Game
 		if( gAngry )
 			animateGirl();
 		
-		if( throwImage >= 0 )
+		if( throwIndex >= 0 )
 			animateThrow();
 		
 		catcher.update();
 	}
 
 	@Override
-	public void draw(Graphics g)
+	public void draw( Graphics g )
 	{
 		g.drawImage( background, 0, 0, getImageObserver() );
 		
@@ -297,10 +301,10 @@ public class OilGame extends Game
 		else
 			g.drawImage( scoreNumbers[ onesIndex ], 115, 66, getImageObserver() );
 		
-		if( throwImage >= 0 && wasThrownLeft )
-			g.drawImage( throwLeftImages[ throwImage ], throwLeftXPoints[ throwImage ], throwLeftYPoints[ throwImage ], getImageObserver() );
-		else if( throwImage >= 0 && !wasThrownLeft )
-			g.drawImage( throwRightImages[ throwImage ], throwRightXPoints[ throwImage ], throwRightYPoints[ throwImage ], getImageObserver() );
+		if( throwIndex >= 0 && wasThrownLeft )
+			g.drawImage( throwLeftImages[ throwIndex ], throwLeftXPoints[ throwIndex ], throwLeftYPoints[ throwIndex ], getImageObserver() );
+		else if( throwIndex >= 0 && !wasThrownLeft )
+			g.drawImage( throwRightImages[ throwIndex ], throwRightXPoints[ throwIndex ], throwRightYPoints[ throwIndex ], getImageObserver() );
 			
 		if( oilMisses >= 0 )
 			g.drawImage( oilMissesImages[ oilMisses ], oilMissXPoint, oilMissYPoint, getImageObserver() );
@@ -350,13 +354,13 @@ public class OilGame extends Game
 			
 				if( bucketScore >= 0 )
 				{
-					throwImage = 0;
+					throwIndex = 0;
 					wasThrownLeft = true;
 				}
 				
 				if( catcher.getColumn() == 0 )
 				{
-					caught = true;
+					leftCatch = true;
 					score = score + bucketScore + 1;
 					bucketScore = -1;
 				}
@@ -375,13 +379,13 @@ public class OilGame extends Game
 			
 				if( bucketScore >= 0 )
 				{
-					throwImage = 0;
+					throwIndex = 0;
 					wasThrownLeft = false;
 				}
 				
 				if( catcher.getColumn() == 3 )
 				{
-					caught = true;
+					rightCatch = true;
 					score = score + bucketScore + 1;
 					bucketScore = -1;
 				}
